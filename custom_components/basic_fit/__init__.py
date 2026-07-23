@@ -30,7 +30,6 @@ from .const import (
     CONF_REDIRECT_URI,
     CONF_REFRESH_TOKEN,
     DOMAIN,
-    HISTORY_DAYS,
 )
 
 PLATFORMS = [
@@ -72,8 +71,7 @@ class BasicFitDataUpdateCoordinator(DataUpdateCoordinator):
         """Fetch membership, visits, measurements and badges."""
         try:
             member = await self.client.get_member()
-            start = date.today() - timedelta(days=HISTORY_DAYS)
-            visits = await self.client.get_visits(from_date=start)
+            visits = await self.client.get_all_visits()
             try:
                 measurements = await self.client.get_body_measurements()
             except BasicFitError as err:
@@ -105,11 +103,13 @@ def _visit_stats(visits: list) -> dict:
     year_prefix = today.strftime("%Y")
     this_month = sum(1 for v in visits if str(v.date or "").startswith(month_prefix))
     this_year = sum(1 for v in visits if str(v.date or "").startswith(year_prefix))
+    dates = sorted(str(v.date) for v in visits if v.date)
     return {
         "visits_total": len(visits),
         "visits_this_month": this_month,
         "visits_this_year": this_year,
         "last_visit": visits[0] if visits else None,
+        "earliest_visit": dates[0] if dates else None,
     }
 
 

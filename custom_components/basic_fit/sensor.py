@@ -52,6 +52,20 @@ class BasicFitSensorDescription(SensorEntityDescription):
     """Describes a Basic-Fit sensor and how to read its value."""
 
     value_fn: Callable[[dict], Any]
+    attr_fn: Callable[[dict], dict[str, Any]] | None = None
+
+
+def _total_visits_attrs(data: dict) -> dict[str, Any]:
+    """Extra attributes explaining what the all-time total does (and doesn't) cover."""
+    stats = data.get("stats") or {}
+    return {
+        "earliest_recorded_visit": stats.get("earliest_visit"),
+        "note": (
+            "Counts every gym visit in Basic-Fit's activity history. This can be "
+            "lower than the lifetime total shown in the Basic-Fit app, which also "
+            "includes check-ins from before the activity feed started recording them."
+        ),
+    }
 
 
 SENSORS: tuple[BasicFitSensorDescription, ...] = (
@@ -78,6 +92,7 @@ SENSORS: tuple[BasicFitSensorDescription, ...] = (
         state_class=SensorStateClass.TOTAL,
         native_unit_of_measurement="visits",
         value_fn=lambda d: (d.get("stats") or {}).get("visits_total"),
+        attr_fn=_total_visits_attrs,
     ),
     BasicFitSensorDescription(
         key="last_visit",
@@ -175,3 +190,10 @@ class BasicFitSensor(BasicFitEntity, SensorEntity):
     def native_value(self) -> Any:
         """Return the current value."""
         return self.entity_description.value_fn(self.coordinator.data or {})
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return extra attributes, if the description defines any."""
+        if self.entity_description.attr_fn is None:
+            return None
+        return self.entity_description.attr_fn(self.coordinator.data or {})
