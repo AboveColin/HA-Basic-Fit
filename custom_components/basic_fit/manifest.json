@@ -1,0 +1,16 @@
+{
+  "domain": "basic_fit",
+  "name": "Basic-Fit",
+  "codeowners": [
+    "@abovecolin"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/abovecolin/HA-Basic-Fit",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/abovecolin/HA-Basic-Fit/issues",
+  "requirements": [
+    "basicfit==1.0.0"
+  ],
+  "version": "1.0.0"
+}

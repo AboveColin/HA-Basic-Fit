@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your Basic-Fit account",
+        "description": "1. Open this link in your browser and sign in to Basic-Fit:\n\n[Sign in to Basic-Fit]({authorize_url})\n\n2. After signing in, your browser is redirected to a page that will not load (an address starting with `com.basicfit.trainingapp:/oauthredirect?...`).\n3. Copy that full address from the browser's address bar and paste it below.",
+        "data": {
+          "redirect": "Redirect address"
+        },
+        "data_description": {
+          "redirect": "The full `com.basicfit.trainingapp:/oauthredirect?code=...` address your browser was sent to after signing in."
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-connect your Basic-Fit account",
+        "description": "Your Basic-Fit login has expired. Sign in again to restore access:\n\n[Sign in to Basic-Fit]({authorize_url})\n\nThen paste the full `com.basicfit.trainingapp:/oauthredirect?...` address below.",
+        "data": {
+          "redirect": "Redirect address"
+        },
+        "data_description": {
+          "redirect": "The full `com.basicfit.trainingapp:/oauthredirect?code=...` address your browser was sent to after signing in."
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "That address could not be used to sign in. Make sure you pasted the complete redirect address, then try again.",
+      "cannot_connect": "Signed in, but could not reach Basic-Fit to read your membership. Please try again.",
+      "unknown": "Something went wrong. Please try again."
+    },
+    "abort": {
+      "already_configured": "This Basic-Fit account is already set up.",
+      "unknown_entry": "The account to re-authenticate could not be found.",
+      "reauth_successful": "Basic-Fit was re-connected successfully."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "visits_this_month": { "name": "Visits this month" },
+      "visits_this_year": { "name": "Visits this year" },
+      "visits_total": { "name": "Total visits" },
+      "last_visit": { "name": "Last visit" },
+      "membership_type": { "name": "Membership type" },
+      "home_club": { "name": "Home club" },
+      "weight": { "name": "Weight" },
+      "body_fat": { "name": "Body fat" },
+      "muscle_mass": { "name": "Muscle mass" },
+      "body_water": { "name": "Body water" },
+      "badges": { "name": "Badges" }
+    },
+    "binary_sensor": {
+      "has_debt": { "name": "Outstanding balance" }
+    },
+    "calendar": {
+      "visits": { "name": "Gym visits" }
+    }
+  }
+}
