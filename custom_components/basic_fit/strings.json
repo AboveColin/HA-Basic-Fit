@@ -39,12 +39,15 @@
       "visits_this_year": { "name": "Visits this year" },
       "visits_total": { "name": "Total visits" },
       "last_visit": { "name": "Last visit" },
+      "visit_streak": { "name": "Visit streak" },
+      "member_since": { "name": "Member since" },
       "membership_type": { "name": "Membership type" },
       "home_club": { "name": "Home club" },
       "weight": { "name": "Weight" },
       "body_fat": { "name": "Body fat" },
       "muscle_mass": { "name": "Muscle mass" },
       "body_water": { "name": "Body water" },
+      "bone_mass": { "name": "Bone mass" },
       "badges": { "name": "Badges" }
     },
     "binary_sensor": {

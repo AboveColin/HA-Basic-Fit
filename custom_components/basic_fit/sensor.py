@@ -68,6 +68,46 @@ def _total_visits_attrs(data: dict) -> dict[str, Any]:
     }
 
 
+def _member_since_time(data: dict) -> datetime | None:
+    raw = getattr(data.get("member"), "member_since", None)
+    if not raw:
+        return None
+    parsed = dt_util.parse_datetime(str(raw))
+    if parsed is None:
+        day = dt_util.parse_date(str(raw))
+        if day is None:
+            return None
+        parsed = datetime(day.year, day.month, day.day)
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=dt_util.DEFAULT_TIME_ZONE)
+    return parsed
+
+
+def _streak_attrs(data: dict) -> dict[str, Any]:
+    streak = data.get("streak")
+    if streak is None:
+        return {}
+    return {
+        "next_badge_at": getattr(streak, "next_badge_at", None),
+        "last_increment": getattr(streak, "last_increment", None),
+    }
+
+
+def _membership_attrs(data: dict) -> dict[str, Any]:
+    member = data.get("member")
+    if member is None:
+        return {}
+    raw = getattr(member, "raw", {}) or {}
+    return {
+        "add_ons": getattr(member, "add_ons", []) or [],
+        "access_method": raw.get("accessMethod"),
+        "can_invite_friend": raw.get("canInviteFriend"),
+        "can_unfreeze": raw.get("canUnfreeze"),
+        "restricted_entry_time": raw.get("restrictedEntryTime"),
+        "member_since": getattr(member, "member_since", None),
+    }
+
+
 SENSORS: tuple[BasicFitSensorDescription, ...] = (
     BasicFitSensorDescription(
         key="visits_this_month",
@@ -102,10 +142,27 @@ SENSORS: tuple[BasicFitSensorDescription, ...] = (
         value_fn=_last_visit_time,
     ),
     BasicFitSensorDescription(
+        key="visit_streak",
+        translation_key="visit_streak",
+        icon="mdi:fire",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="weeks",
+        value_fn=lambda d: getattr(d.get("streak"), "weeks", None),
+        attr_fn=_streak_attrs,
+    ),
+    BasicFitSensorDescription(
+        key="member_since",
+        translation_key="member_since",
+        icon="mdi:calendar-account",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=_member_since_time,
+    ),
+    BasicFitSensorDescription(
         key="membership_type",
         translation_key="membership_type",
         icon="mdi:card-account-details",
         value_fn=lambda d: getattr(d.get("member"), "membership_type", None),
+        attr_fn=_membership_attrs,
     ),
     BasicFitSensorDescription(
         key="home_club",
@@ -144,6 +201,14 @@ SENSORS: tuple[BasicFitSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=PERCENTAGE,
         value_fn=lambda d: getattr(_latest_measurement(d), "water", None),
+    ),
+    BasicFitSensorDescription(
+        key="bone_mass",
+        translation_key="bone_mass",
+        icon="mdi:bone",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=UnitOfMass.KILOGRAMS,
+        value_fn=lambda d: getattr(_latest_measurement(d), "bone", None),
     ),
     BasicFitSensorDescription(
         key="badges",

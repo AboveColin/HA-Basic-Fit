@@ -82,6 +82,11 @@ class BasicFitDataUpdateCoordinator(DataUpdateCoordinator):
             except BasicFitError as err:
                 _LOGGER.debug("Badges unavailable: %s", err)
                 badges = []
+            try:
+                streak = await self.client.get_streak()
+            except BasicFitError as err:
+                _LOGGER.debug("Streak unavailable: %s", err)
+                streak = None
         except BasicFitAuthError as err:
             raise ConfigEntryAuthFailed(str(err)) from err
         except BasicFitError as err:
@@ -92,6 +97,7 @@ class BasicFitDataUpdateCoordinator(DataUpdateCoordinator):
             "visits": visits,
             "measurements": measurements,
             "badges": badges,
+            "streak": streak,
             "stats": _visit_stats(visits),
         }
 
