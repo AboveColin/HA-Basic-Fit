@@ -3,3 +3,11 @@ __pycache__/
 .DS_Store
 .mypy_cache/
 *.log
+
+# Never commit secrets or local HA state
+tokens.json
+*.tokens.json
+.env
+.env.*
+.storage/
+*.whl
