@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import date, timedelta
+from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt as dt_util
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,7 +26,6 @@ from .const import (
     CONF_ACCESS_EXPIRES_AT,
     CONF_ACCESS_TOKEN,
     CONF_CLIENT_ID,
-    CONF_MEMBER_NAME,
     CONF_OBTAINED_AT,
     CONF_REDIRECT_URI,
     CONF_REFRESH_TOKEN,
@@ -104,7 +104,9 @@ class BasicFitDataUpdateCoordinator(DataUpdateCoordinator):
 
 def _visit_stats(visits: list) -> dict:
     """Derive convenience counters from the gym-visit list."""
-    today = date.today()
+    # dt_util.now() honours Home Assistant's configured timezone; date.today()
+    # would use the host's, so "this month" would roll over at the wrong hour.
+    today = dt_util.now().date()
     month_prefix = today.strftime("%Y-%m")
     year_prefix = today.strftime("%Y")
     this_month = sum(1 for v in visits if str(v.date or "").startswith(month_prefix))
