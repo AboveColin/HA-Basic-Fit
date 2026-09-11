@@ -18,6 +18,7 @@ from .const import (
     CONF_ACCESS_EXPIRES_AT,
     CONF_ACCESS_TOKEN,
     CONF_CLIENT_ID,
+    CONF_MEMBER_ID,
     CONF_MEMBER_NAME,
     CONF_OBTAINED_AT,
     CONF_REDIRECT,
@@ -80,6 +81,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             CONF_REDIRECT_URI: tokens.redirect_uri,
             CONF_OBTAINED_AT: tokens.obtained_at,
             CONF_MEMBER_NAME: member.name,
+            CONF_MEMBER_ID: member.membership_number,
         }
         return data, member.name or "Basic-Fit"
 
@@ -94,7 +96,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 data, title = await self._exchange_and_validate(user_input[CONF_REDIRECT])
-                await self.async_set_unique_id(str(data.get(CONF_MEMBER_NAME) or title))
+                await self.async_set_unique_id(str(data.get(CONF_MEMBER_ID) or title))
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(title=f"Basic-Fit ({title})", data=data)
             except InvalidAuth:
@@ -131,6 +133,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None and self._entry is not None:
             try:
                 data, _ = await self._exchange_and_validate(user_input[CONF_REDIRECT])
+                await self.async_set_unique_id(str(data.get(CONF_MEMBER_ID)))
+                self._abort_if_unique_id_mismatch(reason="wrong_account")
                 return self.async_update_reload_and_abort(
                     self._entry, data={**self._entry.data, **data}
                 )

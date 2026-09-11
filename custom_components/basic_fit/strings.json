@@ -30,7 +30,8 @@
     "abort": {
       "already_configured": "This Basic-Fit account is already set up.",
       "unknown_entry": "The account to re-authenticate could not be found.",
-      "reauth_successful": "Basic-Fit was re-connected successfully."
+      "reauth_successful": "Basic-Fit was re-connected successfully.",
+      "wrong_account": "This login belongs to a different Basic-Fit account than the one being re-authenticated. Sign in with the original account instead."
     }
   },
   "entity": {
