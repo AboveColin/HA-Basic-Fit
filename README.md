@@ -18,8 +18,29 @@ signed in. No scraping, no add-ons, no third-party services.
 - Membership type and home club, plus an outstanding-balance problem sensor if
   your account owes anything.
 - Body measurements from the in-club InBody scale linked to your account:
-  weight, body fat, muscle mass and body water.
-- A count of the badges you have earned.
+  weight, body fat, muscle mass, body water and bone mass.
+- A visit streak and a count of the badges you have earned.
+
+## Entities
+
+| Entity | Platform | Notes |
+| --- | --- | --- |
+| Visits this month | sensor | Resets at the start of each month |
+| Visits this year | sensor | Resets at the start of each year |
+| Total visits | sensor | All-time count from the activity history |
+| Last visit | sensor | Timestamp of the most recent check-in |
+| Visit streak | sensor | Consecutive weeks with at least one visit |
+| Member since | sensor | Membership start date |
+| Membership type | sensor | |
+| Home club | sensor | |
+| Weight | sensor | From the in-club InBody scale, when available |
+| Body fat | sensor | From the in-club InBody scale, when available |
+| Muscle mass | sensor | From the in-club InBody scale, when available |
+| Body water | sensor | From the in-club InBody scale, when available |
+| Bone mass | sensor | From the in-club InBody scale, when available |
+| Badges | sensor | Unknown, not zero, when the badges endpoint fails |
+| Outstanding balance | binary_sensor | Diagnostic; on when the membership has a debt |
+| Gym visits | calendar | Every check-in as a one-hour event |
 
 ## Requirements
 
