@@ -74,16 +74,24 @@ class BasicFitDataUpdateCoordinator(DataUpdateCoordinator):
             visits = await self.client.get_all_visits()
             try:
                 measurements = await self.client.get_body_measurements()
+            except BasicFitAuthError:
+                raise
             except BasicFitError as err:
                 _LOGGER.debug("Body measurements unavailable: %s", err)
                 measurements = []
             try:
                 badges = await self.client.get_badges()
+            except BasicFitAuthError:
+                raise
             except BasicFitError as err:
                 _LOGGER.debug("Badges unavailable: %s", err)
-                badges = []
+                # None (not []) marks "unknown", so the badge sensor doesn't
+                # report a real zero into long-term statistics.
+                badges = None
             try:
                 streak = await self.client.get_streak()
+            except BasicFitAuthError:
+                raise
             except BasicFitError as err:
                 _LOGGER.debug("Streak unavailable: %s", err)
                 streak = None

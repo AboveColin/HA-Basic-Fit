@@ -18,6 +18,7 @@ TO_REDACT = {
     "obtained_at",
     "membership_number",
     "card_number",
+    "member_name",
     "authorization",
 }
 

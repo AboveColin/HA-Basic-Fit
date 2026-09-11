@@ -68,6 +68,11 @@ def _total_visits_attrs(data: dict) -> dict[str, Any]:
     }
 
 
+def _badge_count(data: dict) -> int | None:
+    badges = data.get("badges")
+    return len(badges) if badges is not None else None
+
+
 def _member_since_time(data: dict) -> datetime | None:
     raw = getattr(data.get("member"), "member_since", None)
     if not raw:
@@ -216,7 +221,7 @@ SENSORS: tuple[BasicFitSensorDescription, ...] = (
         icon="mdi:trophy",
         state_class=SensorStateClass.TOTAL,
         native_unit_of_measurement="badges",
-        value_fn=lambda d: len(d.get("badges") or []),
+        value_fn=_badge_count,
     ),
 )
 
