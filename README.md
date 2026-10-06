@@ -100,6 +100,13 @@ This is an unofficial, community-built integration. It is not affiliated with
 or supported by Basic-Fit, and "Basic-Fit" is a trademark of its owner. Use it
 with your own account, at your own risk.
 
+## Supporting the project
+
+This project is free and stays free. If it is useful to you, you can support its
+development through [GitHub Sponsors](https://github.com/sponsors/AboveColin).
+Sponsorship is voluntary and unlocks nothing: every feature, fix and security
+update ships in the public release.
+
 ## License
 
 MIT.
