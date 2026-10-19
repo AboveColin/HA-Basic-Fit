@@ -44,7 +44,7 @@ signed in. No scraping, no add-ons, no third-party services.
 
 ## Requirements
 
-- Home Assistant 2024.2.0 or newer.
+- Home Assistant 2024.11.0 or newer.
 - [HACS](https://hacs.xyz/), for the recommended install.
 - A Basic-Fit account you can sign in to in a normal web browser.
 

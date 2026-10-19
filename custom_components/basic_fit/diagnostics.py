@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from homeassistant.components.diagnostics import async_redact_data
+from homeassistant.components.diagnostics import REDACTED, async_redact_data
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
@@ -17,6 +17,7 @@ TO_REDACT = {
     "access_expires_at",
     "obtained_at",
     "membership_number",
+    "member_id",
     "card_number",
     "member_name",
     "authorization",
@@ -29,7 +30,8 @@ async def async_get_config_entry_diagnostics(
     """Return diagnostics for a config entry (tokens and IDs redacted)."""
     data: dict[str, Any] = {
         "entry": {
-            "title": config_entry.title,
+            # The title is "Basic-Fit (<member name>)".
+            "title": REDACTED,
             "data": async_redact_data(config_entry.data, TO_REDACT),
             "options": async_redact_data(config_entry.options, TO_REDACT),
         },
