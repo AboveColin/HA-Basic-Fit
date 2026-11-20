@@ -196,7 +196,7 @@ SENSORS: tuple[BasicFitSensorDescription, ...] = (
         translation_key="muscle_mass",
         icon="mdi:arm-flex",
         state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement=UnitOfMass.KILOGRAMS,
+        native_unit_of_measurement=PERCENTAGE,
         value_fn=lambda d: getattr(_latest_measurement(d), "muscle", None),
     ),
     BasicFitSensorDescription(
